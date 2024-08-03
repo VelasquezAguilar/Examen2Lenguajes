@@ -1,0 +1,36 @@
+public String eliminarProducto(String dni, long codigoProducto){
+        if(this.clienteRepositorio.existsById(dni)){
+            List<Productos> productosCliente = this.clienteRepositorio.findById(dni).get().getProductos();
+
+            for(Productos producto: productosCliente){
+                if(producto.getCodigoProducto()==codigoProducto){
+                    this.productoRepositorio.delete(producto);
+                    return "Se ha eliminado el producto";
+                }
+            }
+
+        }
+
+
+
+        //crear
+        public Cliente crearCliente(Cliente nvoCliente){
+
+            Direccion nvaDireccion = nvoCliente.getDireccion();
+            if(nvaDireccion != null){
+                nvaDireccion.setCliente(nvoCliente);
+            }
+            
+    
+            List<Productos> productos = nvoCliente.getProductos();        
+            if(productos!=null){
+                for(Productos producto : productos){
+                    producto.setCliente(nvoCliente);
+                }
+            }
+    
+            return this.clienteRepositorio.save(nvoCliente);
+         
+            
+        }
+    
